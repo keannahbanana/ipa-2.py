@@ -37,7 +37,16 @@ def shift_letter(letter, shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    pass
+    if letter == " ":
+        return " "
+
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    letter = letter.upper()
+    index = alphabet.index(letter)
+    shifted_index = (index + int(shift)) % 26
+    shifted_letter = alphabet[shifted_index]
+    return shifted_letter
+
 
 def caesar_cipher(message, shift):
     '''Caesar Cipher.
@@ -59,7 +68,16 @@ def caesar_cipher(message, shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    pass
+    shifted_message = ""
+    for char in message:
+        if char == ' ':
+            shifted_message += ' '
+        else:
+            ascii_offset = ord('A')
+            shifted_char = chr((ord(char)-ascii_offset+shift)%26+ascii_offset)
+            shifted_message += shifted_char
+    return shifted_message
+
 
 def shift_by_letter(letter, letter_shift):
     '''Shift By Letter.
@@ -89,7 +107,17 @@ def shift_by_letter(letter, letter_shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    pass
+    if letter == " ":
+        return " "
+
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    shift_value = alphabet.index(letter_shift)
+    index = alphabet.index(letter)
+    shifted_index = (index+shift_value)%26
+    shifted_letter = alphabet[shifted_index]
+
+    return shifted_letter
+
 
 def vigenere_cipher(message, key):
     '''Vigenere Cipher.
@@ -122,7 +150,19 @@ def vigenere_cipher(message, key):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    pass
+    encrypted_message = ""
+    key_length = len(key)
+
+    for i, char in enumerate(message):
+        if char == ' ':
+            encrypted_message += ' '
+        else:
+            shift = ord(key[i%key_length])-ord('A')
+            shifted_char = chr((ord(char)-ord('A')+shift)%26+ord('A'))
+            encrypted_message += shifted_char
+    return encrypted_message
+
+
 
 def scytale_cipher(message, shift):
     '''Scytale Cipher.
@@ -176,7 +216,14 @@ def scytale_cipher(message, shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    pass
+    remainder = len(message) % int(shift)
+    if remainder != 0:
+        message += "_" * (int(shift)-remainder)
+    encoded_message = ""
+    for i in range(len(message)):
+        encoded_message += message[i//int(shift)+(len(message)//int(shift)*(i%int(shift)))]
+    return encoded_message
+
 
 def scytale_decipher(message, shift):
     '''Scytale De-cipher.
@@ -205,4 +252,19 @@ def scytale_decipher(message, shift):
     '''
     # Replace `pass` with your code.
     # Stay within the function. Only use the parameters as input. The function should return your answer.
-    pass
+    decoded_message = ""
+    length = len(message)
+    num_rows = length//shift
+    num_cols = shift
+    last_row_chars = length%shift
+
+    for col in range(num_cols):
+        for row in range(num_rows):
+            index = row*num_cols+col
+            decoded_message += message[index]
+
+        if col < last_row_chars:
+            index = num_rows * num_cols+col
+            decoded_message += message[index]
+
+    return decoded_message
